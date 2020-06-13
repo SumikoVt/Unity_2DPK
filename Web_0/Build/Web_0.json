@@ -1,0 +1,16 @@
+{
+"companyName": "KID",
+"productName": "KID 聖誕老人撿養老金",
+"productVersion": "0.1",
+"dataUrl": "Web_0.data.unityweb",
+"wasmCodeUrl": "Web_0.wasm.code.unityweb",
+"wasmFrameworkUrl": "Web_0.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#242424",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.4.0f1"
+}
