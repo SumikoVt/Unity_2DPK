@@ -35,16 +35,30 @@ public class Player : MonoBehaviour
     // 範圍 Range
     // 範例 - [Header("Speed"), Tooltip("Player's movespeed"), Range(10, 1500)]
 
-    [Range(10, 1500)]
+    [Header("角色移動速度"), Range(1, 1500)]
     public int speed = 50;
+    [Header("角色血量")]
     public float hp = 999.9f;
+    [Header("金幣數量")]
     public int coin;
-    [Range(100, 2000)]
+    [Header("動畫控制器"), Range(100, 2000)]
     public int height = 500;
+    [Header("音效區域")]
     public AudioClip soundJump;
     public AudioClip soundSlide;
     public AudioClip soundDamage;
+    [Header("角色是否死亡")]
     public bool dead;
+    [Header("動畫控制器")]
+    public Animator ani;
+    [Header("膠囊碰撞器")]
+    public CapsuleCollider2D cc2d;
+    [Header("剛體")]
+    public Rigidbody2D rig;
+    /// <summary>
+    /// 是否在地板上
+    /// </summary>
+    public bool isGround;
     #endregion
 
     #region 方法區域
@@ -57,12 +71,38 @@ public class Player : MonoBehaviour
     // API - 功能倉庫
     // 輸出功能 print("字串")
 
+    private void Move()
+    {
+        if (rig.velocity.magnitude < 5)
+        {
+            // 剛體.增加推力(二維向量)
+            rig.AddForce(new Vector2(speed, 0));
+        }
+    }
+
     /// <summary>
     /// 角色的跳躍功能 : 跳躍動畫, 播放跳躍音效, 碰撞範圍往上跳
     /// </summary>
     private void Jump()
     {
-        print("跳躍");
+        bool key = Input.GetKey(KeyCode.Space);
+
+        // 顛倒運算子 !
+        // 作用:將布林值變成相反
+        // !true ------ false
+
+        ani.SetBool("跳躍開關", !isGround);
+
+        // 如果在地板上
+        if (isGround)
+        {
+            if (key)
+            {
+                isGround = false;                                       // 不再地板上
+                rig.AddForce(new Vector2(0, height));                   // 剛體.增加推力(二維向量)
+            }
+
+        }
     }
 
     /// <summary>
@@ -70,7 +110,22 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Slide()
     {
-        print("滑行");
+        // 布林值 = 輸入.取得案件(按鍵代碼.左Ctrl)
+        bool key = Input.GetKey(KeyCode.LeftControl);
+
+        //動畫控制器代號
+        ani.SetBool("滑行開關", key);
+
+        if (key)
+        {
+            cc2d.offset = new Vector2(-0.7657909f, -1.55f);         //位移
+            cc2d.size = new Vector2(1.682096f, 2.02f);              //尺寸
+        }
+        else
+        {
+            cc2d.offset = new Vector2(-0.7657909f, 0.1767215f);     //位移
+            cc2d.size = new Vector2(1.682096f, 5.255785f);          //尺寸
+        }
     }
 
     /// <summary>
@@ -106,8 +161,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        // 呼叫跳躍方法
-        Jump();
+
     }
     // 更新 Update
     // 播放遊戲後一秒執行約60次 - 60FPS
@@ -115,7 +169,24 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Slide();
+        Slide();        
+    }
+
+    /// <summary>
+    /// 固定更新事件:一秒執行50次, 只要有剛體就寫在 FixedUpdate 這
+    /// </summary>
+    private void FixedUpdate()
+    {
+        Jump();
+        Move();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "地板")
+        {
+            isGround = true;
+        }
     }
     #endregion
 }
