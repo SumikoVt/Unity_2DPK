@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class Player : MonoBehaviour
     // 範圍 Range
     // 範例 - [Header("Speed"), Tooltip("Player's movespeed"), Range(10, 1500)]
 
+    [Header("金幣文字")]
+    public Text textcoin;
     [Header("角色移動速度"), Range(1, 1500)]
     public int speed = 50;
     [Header("角色血量")]
@@ -47,6 +50,7 @@ public class Player : MonoBehaviour
     public AudioClip soundJump;
     public AudioClip soundSlide;
     public AudioClip soundDamage;
+    public AudioClip soundCoin;
     [Header("角色是否死亡")]
     public bool dead;
     [Header("動畫控制器")]
@@ -59,6 +63,19 @@ public class Player : MonoBehaviour
     /// 是否在地板上
     /// </summary>
     public bool isGround;
+    [Header("血條")]
+    public Image imgHp;
+
+    private float hpMax;
+    [Header("音效")]
+    public AudioSource aud;
+    [Header("結束畫面")]
+    public GameObject final;
+    [Header("標題")]
+    public Text textTitle;
+    [Header("本次的金幣數量")]
+    public Text textCurrent;
+
     #endregion
 
     #region 方法區域
@@ -73,7 +90,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (rig.velocity.magnitude < 5)
+        if (rig.velocity.magnitude < 3)
         {
             // 剛體.增加推力(二維向量)
             rig.AddForce(new Vector2(speed, 0));
@@ -100,6 +117,7 @@ public class Player : MonoBehaviour
             {
                 isGround = false;                                       // 不再地板上
                 rig.AddForce(new Vector2(0, height));                   // 剛體.增加推力(二維向量)
+                aud.PlayOneShot(soundJump, 0.3f);
             }
 
         }
@@ -120,6 +138,7 @@ public class Player : MonoBehaviour
         {
             cc2d.offset = new Vector2(-0.7657909f, -1.55f);         //位移
             cc2d.size = new Vector2(1.682096f, 2.02f);              //尺寸
+            aud.PlayOneShot(soundSlide, 0.1f);
         }
         else
         {
@@ -133,15 +152,24 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Hit()
     {
+        hp -= 20;                        // 血量遞減 20
 
+        imgHp.fillAmount = hp / hpMax;   // 血條.填滿長度 = 血量 / 血量最大值
+        aud.PlayOneShot(soundDamage, 0.7f);
+
+        if (hp <= 0) Dead();
     }
 
     /// <summary>
     /// 吃金幣 : 金幣數量增加, 更新介面, 金幣音效
     /// </summary>
-    private void EatCoin()
+    /// (參數) 語法 : 參數類型.參數名稱
+    private void EatCoin(Collider2D collision)
     {
-
+        coin++;                           // 金幣數量增加1
+        Destroy(collision.gameObject);    // 刪除(碰到物件.遊戲物件)
+        textcoin.text = "金幣:" + coin;   // 文字介面.文字內容 = "金幣:" + 金幣數量
+        aud.PlayOneShot(soundCoin, 0.2f);
     }
 
     /// <summary>
@@ -149,7 +177,21 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Dead()
     {
+        if (dead) return;                // 如果 死亡 就 跳出
+        dead = true;
+        ani.SetTrigger("死亡觸發");      // 死亡觸發
+        final.SetActive(true);           // 結束畫面.啟動設定(是)
+        textTitle.text = "你死了?????";
+        textCurrent.text = "本次的金幣數量:" + coin;
+    }
 
+    private void Pass()
+    {
+        final.SetActive(true);
+        textTitle.text = "恭喜你獲勝了!";
+        textCurrent.text = "本次的金幣數量:" + coin;
+        speed = 0;
+        rig.velocity = Vector3.zero;
     }
     #endregion
 
@@ -161,7 +203,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-
+        hpMax = hp;
     }
     // 更新 Update
     // 播放遊戲後一秒執行約60次 - 60FPS
@@ -169,7 +211,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Slide();        
+        if (dead) return;
+
+        Slide();
+
+        if (transform.position.y <= -6) Dead();
     }
 
     /// <summary>
@@ -177,15 +223,52 @@ public class Player : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        if (dead) return;
+
         Jump();
         Move();
     }
 
+    /// <summary>
+    /// 碰撞事件:碰到物件開始執行一次
+    /// 碰到有碰撞器的物件執行
+    /// 沒有勾選 Is Trigger
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // 如果 碰到物件 的 名稱 等於 "地板"
         if (collision.gameObject.name == "地板")
         {
             isGround = true;
+        }
+
+        // 如果 碰到物件 的 名稱 等於 "地板" 並且 玩家的 Y 大於 地板的 Y
+        if (collision.gameObject.name == "懸浮地板")
+        {
+            isGround = true;
+        }
+    }
+
+    /// <summary>
+    /// 觸發事件:碰到勾選 Is Trigger 的物件執行一次
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "金幣")          // 如果 碰到物件.標欠 == "金幣"
+        {
+            EatCoin(collision);               // 呼叫吃金幣方法(金幣碰撞)
+        }
+
+        if (collision.tag == "障礙物")
+        {
+            Hit();
+        }
+
+        if (collision.name == "傳送門")
+        {
+            Pass();
         }
     }
     #endregion
