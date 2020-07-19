@@ -1098,9 +1098,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 339667b09d98b644c93669396a5d973e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 28a369814e2113740b00b0701a213fe4, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.214
+  m_Volume: 0.034
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -16599,6 +16599,7 @@ MonoBehaviour:
   soundSlide: {fileID: 8300000, guid: 6a6f3ae970ebc874dabd537bd9804ef6, type: 3}
   soundDamage: {fileID: 8300000, guid: dd42016594f8cd848ae52c71d51f64a0, type: 3}
   soundCoin: {fileID: 8300000, guid: a185df3240fb8b94c8400f4a5b9abd96, type: 3}
+  afterDie: {fileID: 8300000, guid: 3f02e7e7bc852494396a45f0721f5335, type: 3}
   dead: 0
   ani: {fileID: 820211088}
   cc2d: {fileID: 820211092}

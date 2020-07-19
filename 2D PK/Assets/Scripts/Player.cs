@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
     public AudioClip soundSlide;
     public AudioClip soundDamage;
     public AudioClip soundCoin;
+    public AudioClip afterDie;
     [Header("角色是否死亡")]
     public bool dead;
     [Header("動畫控制器")]
@@ -183,6 +184,9 @@ public class Player : MonoBehaviour
         final.SetActive(true);           // 結束畫面.啟動設定(是)
         textTitle.text = "你死了?????";
         textCurrent.text = "本次的金幣數量:" + coin;
+        aud.PlayOneShot(afterDie, 1);
+        speed = 0;
+        rig.velocity = Vector3.zero;
     }
 
     private void Pass()
