@@ -9,6 +9,7 @@ ScriptsOnlyBuild:
     - learn_nonstatic
     - learn_static
     Unity.2D.Tilemap.Editor.dll:
+    - UnityEditor.Tilemaps.GridBrush
     - UnityEditor.Tilemaps.GridPaintingState
     - UnityEditor.Tilemaps.GridPaletteBrushes
     - UnityEditor.Tilemaps.GridPalettes
@@ -76,35 +77,35 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 572}
+      Script: {instanceID: 578}
     - Class: 114
-      Script: {instanceID: 11222}
+      Script: {instanceID: 11154}
     - Class: 114
-      Script: {instanceID: 11386}
+      Script: {instanceID: 11318}
     - Class: 114
-      Script: {instanceID: 11426}
+      Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11478}
+      Script: {instanceID: 11410}
     - Class: 114
-      Script: {instanceID: 11766}
+      Script: {instanceID: 11698}
     - Class: 114
-      Script: {instanceID: 11832}
+      Script: {instanceID: 11764}
     - Class: 114
-      Script: {instanceID: 11948}
+      Script: {instanceID: 11880}
     - Class: 114
-      Script: {instanceID: 12046}
+      Script: {instanceID: 11978}
     - Class: 114
-      Script: {instanceID: 12234}
+      Script: {instanceID: 12166}
     - Class: 114
-      Script: {instanceID: 12478}
+      Script: {instanceID: 12410}
     - Class: 114
-      Script: {instanceID: 12508}
+      Script: {instanceID: 12440}
     - Class: 114
-      Script: {instanceID: 12730}
+      Script: {instanceID: 12662}
     - Class: 114
-      Script: {instanceID: 12984}
+      Script: {instanceID: 12916}
     - Class: 114
-      Script: {instanceID: 13104}
+      Script: {instanceID: 13036}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -167,23 +168,23 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11222}
+      Script: {instanceID: 11154}
     - Class: 114
-      Script: {instanceID: 11386}
+      Script: {instanceID: 11318}
     - Class: 114
-      Script: {instanceID: 11426}
+      Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11762}
+      Script: {instanceID: 11694}
     - Class: 114
-      Script: {instanceID: 11832}
+      Script: {instanceID: 11764}
     - Class: 114
-      Script: {instanceID: 12234}
+      Script: {instanceID: 12166}
     - Class: 114
-      Script: {instanceID: 12508}
+      Script: {instanceID: 12440}
     - Class: 114
-      Script: {instanceID: 12730}
+      Script: {instanceID: 12662}
     - Class: 114
-      Script: {instanceID: 13104}
+      Script: {instanceID: 13036}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
